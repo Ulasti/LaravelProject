@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <form action="{{ route('contact.send') }}" method="POST" class="space-y-6 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+        <form action="{{ route('contact.send') }}" method="POST" class="space-y-6">
             @csrf
 
             <div>

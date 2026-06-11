@@ -7,7 +7,7 @@
         <div class="flex items-center justify-between mb-8">
             <h1 class="text-3xl font-bold text-gray-900">Shop</h1>
             <div class="flex items-center space-x-4">
-                <select class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <select class="appearance-none px-5 py-2.5 pr-14 border border-gray-300 rounded-lg text-sm bg-white text-gray-600 focus:ring-indigo-500 focus:border-indigo-500 bg-[length:16px] bg-[right_14px_center] bg-no-repeat" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27none%27 stroke=%27%239ca3af%27 stroke-width=%272%27 viewBox=%270 0 24 24%27%3E%3Cpath d=%27M19 9l-7 7-7-7%27/%3E%3C/svg%3E')">
                     <option>All Categories</option>
                 </select>
             </div>
