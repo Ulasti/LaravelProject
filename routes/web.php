@@ -26,6 +26,10 @@ Route::middleware([
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::post('/store', 'store')->name('store');
+            Route::get('/{category}', 'show')->name('show');
+            Route::get('/{category}/edit', 'edit')->name('edit');
+            Route::put('/{category}', 'update')->name('update');
+            Route::delete('/{category}', 'destroy')->name('destroy');
         });
     });
 });

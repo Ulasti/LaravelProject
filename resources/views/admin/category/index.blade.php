@@ -31,29 +31,72 @@
             <thead>
                 <tr class="border-b border-gray-200">
                     <th class="text-left pb-3 pr-4 font-semibold text-gray-900">ID</th>
+                    <th class="text-left pb-3 pr-4 font-semibold text-gray-900">Image</th>
                     <th class="text-left pb-3 pr-4 font-semibold text-gray-900">Title</th>
                     <th class="text-left pb-3 pr-4 font-semibold text-gray-900">Status</th>
                     <th class="text-right pb-3 font-semibold text-gray-900">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $recordset)
-                    <tr class="border-b border-gray-100">
-                        <td class="py-3 pr-4 text-gray-900">{{ $recordset->id }}</td>
-                        <td class="py-3 pr-4 text-gray-900">{{ $recordset->title }}</td>
+                @foreach ($data as $parent)
+                    <tr class="border-b border-gray-100 bg-gray-50/50">
+                        <td class="py-3 pr-4 text-gray-900 font-medium">{{ $parent->id }}</td>
                         <td class="py-3 pr-4">
-                            @if ($recordset->status)
+                            @if ($parent->image)
+                                <img src="{{ asset('storage/' . $parent->image) }}" alt="{{ $parent->title }}" class="w-10 h-10 rounded-lg object-cover">
+                            @else
+                                <span class="text-gray-400">—</span>
+                            @endif
+                        </td>
+                        <td class="py-3 pr-4 text-gray-900 font-medium">{{ $parent->title }}</td>
+                        <td class="py-3 pr-4">
+                            @if ($parent->status)
                                 <span class="text-green-600 font-medium"><span class="text-green-500 mr-1">&#9679;</span>Active</span>
                             @else
                                 <span class="text-red-600 font-medium"><span class="text-red-400 mr-1">&#9679;</span>Inactive</span>
                             @endif
                         </td>
                         <td class="py-3 text-right space-x-4">
-                            <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium">Show</a>
-                            <a href="#" class="text-amber-600 hover:text-amber-700 font-medium">Edit</a>
-                            <a href="#" class="text-red-600 hover:text-red-700 font-medium">Delete</a>
+                            <a href="{{ route('admin.category.show', $parent->id) }}" class="text-indigo-600 hover:text-indigo-700 font-medium">Show</a>
+                            <a href="{{ route('admin.category.edit', $parent->id) }}" class="text-amber-600 hover:text-amber-700 font-medium">Edit</a>
+                            <form action="{{ route('admin.category.destroy', $parent->id) }}" method="POST" class="inline" onsubmit="return confirm('Delete this category{{ $parent->children->count() ? ' and all its sub-categories' : '' }}? This cannot be undone.')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-700 font-medium">Delete</button>
+                            </form>
                         </td>
                     </tr>
+                    @foreach ($parent->children as $child)
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 pr-4 text-gray-900 pl-8">{{ $child->id }}</td>
+                            <td class="py-3 pr-4">
+                                @if ($child->image)
+                                    <img src="{{ asset('storage/' . $child->image) }}" alt="{{ $child->title }}" class="w-8 h-8 rounded-lg object-cover">
+                                @else
+                                    <span class="text-gray-400">—</span>
+                                @endif
+                            </td>
+                            <td class="py-3 pr-4 text-gray-600">
+                                <span class="text-gray-400 mr-2">&#9492;</span>{{ $child->title }}
+                            </td>
+                            <td class="py-3 pr-4">
+                                @if ($child->status)
+                                    <span class="text-green-600 font-medium"><span class="text-green-500 mr-1">&#9679;</span>Active</span>
+                                @else
+                                    <span class="text-red-600 font-medium"><span class="text-red-400 mr-1">&#9679;</span>Inactive</span>
+                                @endif
+                            </td>
+                            <td class="py-3 text-right space-x-4">
+                                <a href="{{ route('admin.category.show', $child->id) }}" class="text-indigo-600 hover:text-indigo-700 font-medium">Show</a>
+                                <a href="{{ route('admin.category.edit', $child->id) }}" class="text-amber-600 hover:text-amber-700 font-medium">Edit</a>
+                                <form action="{{ route('admin.category.destroy', $child->id) }}" method="POST" class="inline" onsubmit="return confirm('Delete this sub-category? This cannot be undone.')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-700 font-medium">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
                 @endforeach
             </tbody>
         </table>

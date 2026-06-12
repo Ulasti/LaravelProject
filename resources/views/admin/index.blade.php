@@ -16,7 +16,7 @@
 
         <div class="border-t-2 border-emerald-500 pt-4">
             <p class="text-sm font-medium text-gray-400">Categories</p>
-            <p class="text-3xl font-bold text-gray-900 mt-1">0</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">{{ \App\Models\Category::count() }}</p>
         </div>
 
         <div class="border-t-2 border-amber-500 pt-4">
@@ -26,7 +26,7 @@
 
         <div class="border-t-2 border-rose-500 pt-4">
             <p class="text-sm font-medium text-gray-400">Users</p>
-            <p class="text-3xl font-bold text-gray-900 mt-1">0</p>
+            <p class="text-3xl font-bold text-gray-900 mt-1">{{ \App\Models\User::count() }}</p>
         </div>
     </div>
 @endsection
