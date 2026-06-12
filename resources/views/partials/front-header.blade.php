@@ -1,23 +1,67 @@
-<header>
-    <nav>
-        <a href="{{ url('/') }}">{{ config('app.name') }}</a>
-        <ul>
-            <li><a href="{{ url('/') }}">Home</a></li>
-            <li><a href="#">Shop</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" x-data="{ open: false }">
+        <div class="flex items-center justify-between h-16">
+            <a href="{{ url('/') }}" class="text-xl font-bold text-gray-900 tracking-tight">
+                {{ config('app.name') }}
+            </a>
+
+            <div class="hidden lg:flex items-center space-x-8">
+                <a href="{{ route('home') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Home</a>
+                <a href="{{ route('shop') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Shop</a>
+                <a href="{{ route('about') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">About</a>
+                <a href="{{ route('contact') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Contact</a>
+            </div>
+
+            <div class="hidden lg:flex items-center space-x-4">
+                @guest
+                    <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Sign In</a>
+                    <a href="{{ route('register') }}" class="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition">Get Started</a>
+                @endguest
+                @auth
+                    <div class="relative" x-data="{ profileOpen: false }">
+                        <button @click="profileOpen = !profileOpen" class="flex items-center space-x-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition">
+                            <span>{{ Auth::user()->name }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div x-show="profileOpen" @click.away="profileOpen = false" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1" x-cloak>
+                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">Dashboard</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                @endauth
+            </div>
+
+            <button @click="open = !open" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div x-show="open" class="lg:hidden pb-4 border-t border-gray-200 mt-2 pt-4 space-y-1" x-cloak>
+            <a href="{{ route('home') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Home</a>
+            <a href="{{ route('shop') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Shop</a>
+            <a href="{{ route('about') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">About</a>
+            <a href="{{ route('contact') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Contact</a>
             @guest
-                <li><a href="{{ route('login') }}">Login</a></li>
-                <li><a href="{{ route('register') }}">Register</a></li>
+                <div class="border-t border-gray-200 pt-2 mt-2 space-y-1">
+                    <a href="{{ route('login') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Sign In</a>
+                    <a href="{{ route('register') }}" class="block px-3 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition">Get Started</a>
+                </div>
             @endguest
             @auth
-                <li>
+                <div class="border-t border-gray-200 pt-2 mt-2 space-y-1">
+                    <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Dashboard</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit">Logout ({{ Auth::user()->name }})</button>
+                        <button type="submit" class="w-full text-left px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Logout</button>
                     </form>
-                </li>
+                </div>
             @endauth
-        </ul>
+        </div>
     </nav>
 </header>
