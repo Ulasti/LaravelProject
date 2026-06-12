@@ -9,32 +9,27 @@
 
     @yield('css')
 
-    @vite(['resources/css/admin.css', 'resources/js/admin.js'])
+    @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/admin.js'])
     @livewireStyles
 </head>
 <body class="bg-gray-50 antialiased" x-data="{ sidebarOpen: false }">
 
     <div x-show="sidebarOpen" x-cloak class="fixed inset-0 z-40 bg-gray-900/50 lg:hidden" @click="sidebarOpen = false"></div>
 
-    <aside class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 ease-in-out lg:translate-x-0" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
+    <aside class="fixed inset-y-0 left-0 z-50 w-56 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 ease-in-out lg:translate-x-0" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
         @include('admin.partials.sidebar')
     </aside>
 
-    <div class="min-h-screen flex flex-col lg:pl-64">
+    <div class="min-h-screen flex flex-col lg:pl-56">
         @include('admin.partials.header')
 
-        <div class="border-b border-gray-200 bg-white">
-            <div class="px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <h1 class="text-xl font-bold text-gray-900">@yield('page_title', 'Dashboard')</h1>
-                    <nav class="flex items-center space-x-2 text-sm">
-                        @yield('breadcrumbs')
-                    </nav>
-                </div>
+        <main class="flex-1 px-8 py-8">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold text-gray-900">@yield('page_title', 'Dashboard')</h1>
+                <nav class="mt-1 flex items-center space-x-2 text-sm text-gray-500">
+                    @yield('breadcrumbs')
+                </nav>
             </div>
-        </div>
-
-        <main class="flex-1 px-6 py-8">
             @yield('content')
         </main>
 

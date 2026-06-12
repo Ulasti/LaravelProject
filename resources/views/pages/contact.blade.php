@@ -50,15 +50,15 @@
         </form>
 
         <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="text-center p-6 bg-white border border-gray-100">
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">Address</h3>
                 <p class="mt-2 text-sm text-gray-500">123 Shop Street<br>City, State 12345</p>
             </div>
-            <div class="text-center p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="text-center p-6 bg-white border border-gray-100">
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">Email</h3>
                 <p class="mt-2 text-sm text-gray-500">hello@example.com</p>
             </div>
-            <div class="text-center p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="text-center p-6 bg-white border border-gray-100">
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">Phone</h3>
                 <p class="mt-2 text-sm text-gray-500">+1 (555) 123-4567</p>
             </div>

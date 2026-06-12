@@ -9,7 +9,7 @@
             <p class="mt-1 text-sm text-gray-500">Verify your email address</p>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <div class="bg-white border border-gray-100 p-8">
             <div class="mb-4 text-sm text-gray-600">
                 {{ __('Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
             </div>

@@ -9,7 +9,7 @@
             <p class="mt-1 text-sm text-gray-500">Choose a new password</p>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+        <div class="bg-white border border-gray-100 p-8">
             <x-validation-errors class="mb-4" />
 
             <form method="POST" action="{{ route('password.update') }}">
