@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,17 @@ Route::middleware([
             Route::get('/{category}/edit', 'edit')->name('edit');
             Route::put('/{category}', 'update')->name('update');
             Route::delete('/{category}', 'destroy')->name('destroy');
+        });
+
+        Route::prefix('product')->name('product.')->controller(ProductController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/{product}', 'show')->name('show');
+            Route::get('/{product}/edit', 'edit')->name('edit');
+            Route::put('/{product}', 'update')->name('update');
+            Route::delete('/{product}', 'destroy')->name('destroy');
+            Route::delete('/image/{productImage}', 'destroyImage')->name('image.destroy');
         });
     });
 });
