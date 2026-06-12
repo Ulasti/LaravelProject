@@ -40,8 +40,8 @@
                 </svg>
             </button>
             <div x-show="open" x-cloak class="mt-0.5 space-y-0.5">
-                <a href="#" class="block pl-12 pr-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 transition">All Products</a>
-                <a href="#" class="block pl-12 pr-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 transition">Add Product</a>
+                <a href="{{ route('admin.product.index') }}" class="block pl-12 pr-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 transition">All Products</a>
+                <a href="{{ route('admin.product.create') }}" class="block pl-12 pr-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 transition">Add Product</a>
             </div>
         </div>
 
