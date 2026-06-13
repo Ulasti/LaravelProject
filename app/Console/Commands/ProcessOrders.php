@@ -40,7 +40,7 @@ class ProcessOrders extends Command
     private function processProcessing(): void
     {
         $orders = Order::where('status', 'processing')
-            ->where('updated_at', '<=', now()->subMinutes(30))
+            ->where('updated_at', '<=', now()->subMinutes(2))
             ->get();
 
         foreach ($orders as $order) {
