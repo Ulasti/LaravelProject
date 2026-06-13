@@ -18,18 +18,26 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-        ]);
-
-        if ($request->filled('password')) {
+        if ($request->has('password') || $request->has('current_password')) {
             $request->validate([
                 'current_password' => 'required|current_password',
                 'password' => 'required|string|min:8|confirmed',
             ]);
-            $data['password'] = Hash::make($request->password);
+
+            $user->update(['password' => Hash::make($request->password)]);
+
+            return redirect()->route('user.profile')->with('success', 'Password updated successfully.');
         }
+
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+            'card_nickname' => 'nullable|string|max:255',
+            'card_last_four' => 'nullable|string|size:4',
+            'card_expiry' => 'nullable|string|max:7',
+        ]);
 
         $user->update($data);
 

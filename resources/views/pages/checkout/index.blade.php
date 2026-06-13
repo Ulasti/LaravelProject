@@ -22,14 +22,14 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                                <textarea name="shipping_address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 @error('shipping_address') border-red-500 @enderror">{{ old('shipping_address') }}</textarea>
+                                <textarea name="shipping_address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 @error('shipping_address') border-red-500 @enderror">{{ old('shipping_address', $user->address) }}</textarea>
                                 @error('shipping_address')
                                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                                <input type="text" name="shipping_phone" value="{{ old('shipping_phone') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 @error('shipping_phone') border-red-500 @enderror">
+                                <input type="text" name="shipping_phone" value="{{ old('shipping_phone', $user->phone) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 @error('shipping_phone') border-red-500 @enderror">
                                 @error('shipping_phone')
                                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                                 @enderror
@@ -67,6 +67,19 @@
                         <p class="text-base font-semibold text-gray-900">Total</p>
                         <p class="text-lg font-bold text-gray-900">${{ number_format($total, 2) }}</p>
                     </div>
+
+                    @if ($user->card_nickname && $user->card_last_four)
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Payment</p>
+                            <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                                <i class="fas fa-credit-card text-gray-400"></i>
+                                <div class="text-sm">
+                                    <p class="text-gray-900 font-medium">{{ $user->card_nickname }}</p>
+                                    <p class="text-gray-400 text-xs">**** {{ $user->card_last_four }} @if ($user->card_expiry) | {{ $user->card_expiry }} @endif</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

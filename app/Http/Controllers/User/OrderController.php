@@ -27,4 +27,16 @@ class OrderController extends Controller
 
         return view('user.order.show', compact('order'));
     }
+
+    public function cancel(Order $order)
+    {
+        if ($order->user_id !== auth()->id()) {
+            abort(404);
+        }
+
+        $order->update(['status' => 'cancelled']);
+
+        return redirect()->route('user.order.show', $order)
+            ->with('success', 'Order #' . $order->id . ' has been cancelled.');
+    }
 }
