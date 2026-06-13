@@ -13,6 +13,11 @@
             <span>Dashboard</span>
         </a>
 
+        <a href="{{ route('user.order.index') }}" class="flex items-center space-x-3 px-3 py-2 text-sm font-medium transition border-l-2 {{ request()->routeIs('user.order*') ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300' }}">
+            <i class="fas fa-shopping-bag w-4 text-center"></i>
+            <span>My Orders</span>
+        </a>
+
         <a href="{{ route('user.review.index') }}" class="flex items-center space-x-3 px-3 py-2 text-sm font-medium transition border-l-2 {{ request()->routeIs('user.review*') ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300' }}">
             <i class="fas fa-star w-4 text-center"></i>
             <span>My Reviews</span>
