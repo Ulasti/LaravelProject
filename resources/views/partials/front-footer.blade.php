@@ -14,6 +14,7 @@
                     <li><a href="{{ route('shop') }}" class="text-sm text-gray-500 hover:text-gray-900 transition">Shop</a></li>
                     <li><a href="{{ route('about') }}" class="text-sm text-gray-500 hover:text-gray-900 transition">About</a></li>
                     <li><a href="{{ route('contact') }}" class="text-sm text-gray-500 hover:text-gray-900 transition">Contact</a></li>
+                    <li><a href="{{ route('faq') }}" class="text-sm text-gray-500 hover:text-gray-900 transition">FAQ</a></li>
                 </ul>
             </div>
             <div>

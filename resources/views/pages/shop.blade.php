@@ -30,6 +30,20 @@
                     <div class="p-4">
                         <p class="text-xs font-medium text-indigo-600 uppercase tracking-wider">{{ $product->category?->title ?? 'Uncategorized' }}</p>
                         <h3 class="mt-1 font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{{ $product->title }}</h3>
+                        @if ($product->reviews_count > 0)
+                            <div class="mt-1 flex items-center space-x-1">
+                                <div class="flex items-center space-x-0.5">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= round($product->reviews_avg_rating ?? 0))
+                                            <i class="fas fa-star text-amber-400 text-xs"></i>
+                                        @else
+                                            <i class="far fa-star text-gray-300 text-xs"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <span class="text-xs text-gray-400">({{ $product->reviews_count }})</span>
+                            </div>
+                        @endif
                         <p class="mt-1 text-sm text-gray-500">${{ number_format($product->price, 2) }}</p>
                     </div>
                 </a>
