@@ -11,6 +11,7 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
+Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('product.detail');
 
 Route::middleware([
     'auth:sanctum',

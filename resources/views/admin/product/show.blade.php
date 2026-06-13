@@ -61,7 +61,7 @@
 
         <div>
             <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Description</h3>
-            <p class="text-gray-900 whitespace-pre-wrap">{{ $product->description ?? '—' }}</p>
+            <p class="text-gray-900">{!! $product->description ?? '—' !!}</p>
         </div>
 
         <div class="grid grid-cols-3 gap-4">

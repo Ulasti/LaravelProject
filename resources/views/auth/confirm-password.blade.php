@@ -9,7 +9,7 @@
             <p class="mt-1 text-sm text-gray-500">Secure area</p>
         </div>
 
-        <div class="bg-white border border-gray-100 p-8">
+        <div class="bg-white border border-gray-100 rounded-lg p-8">
             <div class="mb-4 text-sm text-gray-600">
                 {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
             </div>
