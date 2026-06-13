@@ -27,8 +27,8 @@
                     <label for="rating" class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
                     <div class="flex items-center space-x-1" x-data="{ rating: {{ old('rating', $review->rating) }} }">
                         @for ($i = 1; $i <= 5; $i++)
-                            <button type="button" @click="rating = {{ $i }}" class="text-2xl focus:outline-none transition-colors" :class="rating >= {{ $i }} ? 'text-amber-400' : 'text-gray-300'">
-                                <i class="fas" :class="rating >= {{ $i }} ? 'fa-star' : 'fa-star'"></i>
+                            <button type="button" @click="rating = {{ $i }}" class="text-2xl focus:outline-none transition-colors">
+                                <i :class="rating >= {{ $i }} ? 'fas fa-star text-amber-400' : 'far fa-star text-gray-300'"></i>
                             </button>
                         @endfor
                         <input type="hidden" name="rating" x-model="rating">

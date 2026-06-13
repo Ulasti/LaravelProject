@@ -21,7 +21,8 @@
                 </button>
 
                 <div x-show="profileOpen" @click.away="profileOpen = false" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1" x-cloak>
-                    <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900">Dashboard</a>
+                    <a href="{{ route('admin.home') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900">Admin Panel</a>
+                    <a href="{{ route('user.home') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900">User Panel</a>
                     <div class="border-t border-gray-100"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
