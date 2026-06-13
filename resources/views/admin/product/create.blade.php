@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="max-w-lg">
+    <div class="max-w-4xl">
         <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
@@ -58,7 +58,7 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea name="description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
+                    <textarea name="description" id="description" rows="10" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                     @enderror
@@ -133,4 +133,12 @@
             </div>
         </form>
     </div>
+@endsection
+
+@section('js')
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#description'))
+            .catch(error => console.error(error));
+    </script>
 @endsection

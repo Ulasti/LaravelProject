@@ -9,7 +9,7 @@
             <p class="mt-1 text-sm text-gray-500">Verify your identity</p>
         </div>
 
-        <div class="bg-white border border-gray-100 p-8">
+        <div class="bg-white border border-gray-100 rounded-lg p-8">
             <div x-data="{ recovery: false }">
                 <div class="mb-4 text-sm text-gray-600" x-show="! recovery">
                     {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}

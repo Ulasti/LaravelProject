@@ -11,12 +11,14 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    <style>[x-cloak]{display:none!important}</style>
 </head>
 <body class="flex flex-col min-h-screen bg-gray-50 text-gray-600 antialiased">
     @include('partials.front-header')
 
     <main class="flex-1">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 {{ ($noWrapperPadding ?? false) ? '' : 'py-8' }}">
             @yield('content')
         </div>
     </main>
