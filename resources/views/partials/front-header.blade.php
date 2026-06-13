@@ -18,7 +18,7 @@
                     <div x-show="shopOpen" x-cloak class="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                         <a href="{{ route('shop') }}" class="block px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-gray-50">All Products</a>
                         <div class="border-t border-gray-100 my-1"></div>
-                        @foreach ($navCategories->with('children')->orderBy('title')->get() as $cat)
+                        @foreach ($navCategories->where('status', 1)->with('children')->orderBy('title')->get() as $cat)
                             <a href="{{ route('shop', ['category' => $cat->id]) }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">{{ $cat->title }}</a>
                             @foreach ($cat->children as $child)
                                 <a href="{{ route('shop', ['category' => $child->id]) }}" class="block px-4 py-2 pl-8 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50">{{ $child->title }}</a>
@@ -44,7 +44,10 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         <div x-show="profileOpen" @click.away="profileOpen = false" x-cloak class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1" x-cloak>
-                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">Dashboard</a>
+                            <a href="{{ route('user.home') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">Dashboard</a>
+                            @if (Auth::user()->hasRole('admin'))
+                                <a href="{{ route('admin.home') }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">Admin Panel</a>
+                            @endif
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">Logout</button>
@@ -72,7 +75,7 @@
                 </button>
                 <div x-show="mobileShopOpen" x-cloak class="pl-4 space-y-1">
                     <a href="{{ route('shop') }}" class="block px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-gray-50 rounded-lg transition">All Products</a>
-                    @foreach ($navCategories->with('children')->orderBy('title')->get() as $cat)
+                    @foreach ($navCategories->where('status', 1)->with('children')->orderBy('title')->get() as $cat)
                         <a href="{{ route('shop', ['category' => $cat->id]) }}" class="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">{{ $cat->title }}</a>
                         @foreach ($cat->children as $child)
                             <a href="{{ route('shop', ['category' => $child->id]) }}" class="block px-3 py-2 pl-6 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">{{ $child->title }}</a>
@@ -92,7 +95,10 @@
             @endguest
             @auth
                 <div class="border-t border-gray-200 pt-2 mt-2 space-y-1">
-                    <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Dashboard</a>
+                    <a href="{{ route('user.home') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Dashboard</a>
+                    @if (Auth::user()->hasRole('admin'))
+                        <a href="{{ route('admin.home') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Admin Panel</a>
+                    @endif
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="w-full text-left px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Logout</button>

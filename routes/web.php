@@ -6,8 +6,12 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\ReviewController as UserReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -25,10 +29,23 @@ Route::middleware([
     config('jetstream.auth_session'),
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return redirect()->route('user.home');
     })->name('dashboard');
 
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('home');
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+        Route::prefix('reviews')->name('review.')->controller(UserReviewController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{review}/edit', 'edit')->name('edit');
+            Route::put('/{review}', 'update')->name('update');
+            Route::delete('/{review}', 'destroy')->name('destroy');
+        });
+    });
+
+    Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::get('/', [AdminHomeController::class, 'index'])->name('home');
 
         Route::prefix('category')->name('category.')->controller(CategoryController::class)->group(function () {
@@ -74,5 +91,14 @@ Route::middleware([
             Route::put('/{review}', 'update')->name('update');
             Route::delete('/{review}', 'destroy')->name('destroy');
         });
+
+        Route::prefix('user')->name('user.')->controller(AdminUserController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{user}/edit', 'edit')->name('edit');
+            Route::put('/{user}', 'update')->name('update');
+        });
+
+        Route::view('/orders', 'admin.order.index')->name('order.index');
+        Route::view('/settings', 'admin.setting.index')->name('setting.index');
     });
 });

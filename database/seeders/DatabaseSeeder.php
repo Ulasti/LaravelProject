@@ -12,14 +12,20 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        User::firstOrCreate(['email' => 'test@example.com'], [
+        $this->call([
+            RoleSeeder::class,
+            CategoryProductSeeder::class,
+            FaqSeeder::class,
+        ]);
+
+        $user = User::firstOrCreate(['email' => 'test@example.com'], [
             'name' => 'Test User',
             'password' => bcrypt('password'),
         ]);
 
-        $this->call([
-            CategoryProductSeeder::class,
-            FaqSeeder::class,
-        ]);
+        $user->roles()->firstOrCreate(
+            ['slug' => 'admin'],
+            ['name' => 'Admin', 'description' => 'Administrator with full access']
+        );
     }
 }

@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::whereNull('parent_id')->with('children')->get();
+        $categories = Category::whereNull('parent_id')->where('status', 1)->with('children')->get();
         $featuredProducts = Product::where('status', 1)->withAvg(['reviews as reviews_avg_rating' => fn($q) => $q->where('status', 'approved')], 'rating')->withCount(['reviews as reviews_count' => fn($q) => $q->where('status', 'approved')])->inRandomOrder()->limit(4)->get();
         $latestProducts = Product::where('status', 1)->withAvg(['reviews as reviews_avg_rating' => fn($q) => $q->where('status', 'approved')], 'rating')->withCount(['reviews as reviews_count' => fn($q) => $q->where('status', 'approved')])->latest()->limit(8)->get();
         $sliderProducts = Product::where('status', 1)->inRandomOrder()->limit(5)->get();
@@ -47,7 +47,7 @@ class HomeController extends Controller
 
     public function shop(Request $request)
     {
-        $categories = Category::whereNull('parent_id')->with('children')->get();
+        $categories = Category::whereNull('parent_id')->where('status', 1)->with('children')->get();
         $query = Product::where('status', 1);
 
         if ($request->filled('category')) {
