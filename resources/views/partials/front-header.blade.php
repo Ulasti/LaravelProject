@@ -29,6 +29,7 @@
 
                 <a href="{{ route('about') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">About</a>
                 <a href="{{ route('contact') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Contact</a>
+                <a href="{{ route('faq') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">FAQ</a>
             </div>
 
             <div class="hidden lg:flex items-center space-x-4">
@@ -82,6 +83,7 @@
 
             <a href="{{ route('about') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">About</a>
             <a href="{{ route('contact') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Contact</a>
+            <a href="{{ route('faq') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">FAQ</a>
             @guest
                 <div class="border-t border-gray-200 pt-2 mt-2 space-y-1">
                     <a href="{{ route('login') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Sign In</a>
