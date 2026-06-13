@@ -82,14 +82,15 @@
                     @endif
                 </div>
 
-                <div class="mt-8 flex items-center space-x-4">
-                    <div class="flex items-center border border-gray-300 rounded-lg">
-                        <button type="button" class="px-3 py-2 text-gray-500 hover:text-gray-900 transition">-</button>
-                        <input type="number" value="1" min="1" class="w-12 text-center border-x border-gray-300 py-2 text-sm focus:outline-none">
-                        <button type="button" class="px-3 py-2 text-gray-500 hover:text-gray-900 transition">+</button>
+                <form action="{{ route('cart.store', $product) }}" method="POST" class="mt-8 flex items-center space-x-4">
+                    @csrf
+                    <div class="flex items-center border border-gray-300 rounded-lg" x-data="{ qty: 1 }">
+                        <button type="button" @click="qty = Math.max(1, qty - 1)" class="px-3 py-2 text-gray-500 hover:text-gray-900 transition">-</button>
+                        <input type="number" name="quantity" x-model="qty" min="1" class="w-12 text-center border-x border-gray-300 py-2 text-sm focus:outline-none">
+                        <button type="button" @click="qty++" class="px-3 py-2 text-gray-500 hover:text-gray-900 transition">+</button>
                     </div>
-                    <button type="button" class="flex-1 px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition text-sm">Add to Cart</button>
-                </div>
+                    <button type="submit" class="flex-1 px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition text-sm">Add to Cart</button>
+                </form>
 
                 @if ($product->keywords)
                     <div class="mt-6 flex items-center space-x-2">

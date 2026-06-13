@@ -4,12 +4,16 @@ use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\ReviewController as UserReviewController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +28,14 @@ Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 
 Route::post('/product/{product}/review', [ReviewController::class, 'store'])->name('review.store')->middleware('auth');
 
+Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/add/{product}', 'store')->name('store');
+    Route::post('/update/{product}', 'update')->name('update');
+    Route::delete('/remove/{product}', 'destroy')->name('destroy');
+    Route::post('/clear', 'clear')->name('clear');
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -31,6 +43,10 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return redirect()->route('user.home');
     })->name('dashboard');
+
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/confirmation/{order}', [CheckoutController::class, 'confirmation'])->name('checkout.confirmation');
 
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('home');
@@ -42,6 +58,11 @@ Route::middleware([
             Route::get('/{review}/edit', 'edit')->name('edit');
             Route::put('/{review}', 'update')->name('update');
             Route::delete('/{review}', 'destroy')->name('destroy');
+        });
+
+        Route::prefix('orders')->name('order.')->controller(UserOrderController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order}', 'show')->name('show');
         });
     });
 
@@ -98,7 +119,12 @@ Route::middleware([
             Route::put('/{user}', 'update')->name('update');
         });
 
-        Route::view('/orders', 'admin.order.index')->name('order.index');
+        Route::prefix('order')->name('order.')->controller(AdminOrderController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order}', 'show')->name('show');
+            Route::put('/{order}', 'update')->name('update');
+        });
+
         Route::view('/settings', 'admin.setting.index')->name('setting.index');
     });
 });

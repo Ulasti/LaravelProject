@@ -21,15 +21,17 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse ($products as $product)
-                <a href="{{ route('product.detail', $product->slug) }}" class="group bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition cursor-pointer">
-                    <div class="aspect-[4/3] bg-gray-100 overflow-hidden">
+                <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition">
+                    <a href="{{ route('product.detail', $product->slug) }}" class="block aspect-[4/3] bg-gray-100 overflow-hidden">
                         @if ($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                         @endif
-                    </div>
+                    </a>
                     <div class="p-4">
                         <p class="text-xs font-medium text-indigo-600 uppercase tracking-wider">{{ $product->category?->title ?? 'Uncategorized' }}</p>
-                        <h3 class="mt-1 font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{{ $product->title }}</h3>
+                        <a href="{{ route('product.detail', $product->slug) }}">
+                            <h3 class="mt-1 font-semibold text-gray-900 hover:text-indigo-600 transition-colors">{{ $product->title }}</h3>
+                        </a>
                         @if ($product->reviews_count > 0)
                             <div class="mt-1 flex items-center space-x-1">
                                 <div class="flex items-center space-x-0.5">
@@ -44,9 +46,16 @@
                                 <span class="text-xs text-gray-400">({{ $product->reviews_count }})</span>
                             </div>
                         @endif
-                        <p class="mt-1 text-sm text-gray-500">${{ number_format($product->price, 2) }}</p>
+                        <div class="mt-2 flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-900">${{ number_format($product->price, 2) }}</p>
+                            <form action="{{ route('cart.store', $product) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition">Add to Cart</button>
+                            </form>
+                        </div>
                     </div>
-                </a>
+                </div>
             @empty
                 <p class="col-span-full text-center text-gray-500 py-12">No products found.</p>
             @endforelse
