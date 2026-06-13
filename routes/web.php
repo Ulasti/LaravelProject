@@ -63,6 +63,7 @@ Route::middleware([
         Route::prefix('orders')->name('order.')->controller(UserOrderController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{order}', 'show')->name('show');
+            Route::post('/{order}/cancel', 'cancel')->name('cancel');
         });
     });
 
