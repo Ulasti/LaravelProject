@@ -33,6 +33,13 @@
             </div>
 
             <div class="hidden lg:flex items-center space-x-4">
+                <a href="{{ route('wishlist.index') }}" class="relative text-gray-600 hover:text-red-500 transition">
+                    <i class="fas fa-heart text-lg"></i>
+                    @php $wishlistCount = \App\Services\WishlistService::count(); @endphp
+                    @if ($wishlistCount > 0)
+                        <span class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">{{ $wishlistCount > 99 ? '99+' : $wishlistCount }}</span>
+                    @endif
+                </a>
                 <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-gray-900 transition">
                     <i class="fas fa-shopping-cart text-lg"></i>
                     @php $cartCount = \App\Http\Controllers\CartController::count(); @endphp
@@ -95,6 +102,13 @@
             <a href="{{ route('about') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">About</a>
             <a href="{{ route('contact') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">Contact</a>
             <a href="{{ route('faq') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">FAQ</a>
+            <a href="{{ route('wishlist.index') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">
+                <i class="fas fa-heart mr-1"></i> Wishlist
+                @php $wishlistCount = \App\Services\WishlistService::count(); @endphp
+                @if ($wishlistCount > 0)
+                    <span class="ml-1 text-xs text-red-500">({{ $wishlistCount }})</span>
+                @endif
+            </a>
             <a href="{{ route('cart.index') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition">
                 <i class="fas fa-shopping-cart mr-1"></i> Cart
                 @php $cartCount = \App\Http\Controllers\CartController::count(); @endphp

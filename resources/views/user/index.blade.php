@@ -30,7 +30,7 @@
             </div>
             <div class="border-t-2 border-amber-500 pt-4">
                 <p class="text-sm font-medium text-gray-400">Wishlist</p>
-                <p class="text-3xl font-bold text-gray-900 mt-1">0</p>
+                <p class="text-3xl font-bold text-gray-900 mt-1">{{ \App\Services\WishlistService::count() }}</p>
             </div>
         </div>
 
@@ -38,6 +38,10 @@
             <a href="{{ route('user.review.index') }}" class="p-5 border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition">
                 <p class="font-semibold text-gray-900">My Reviews</p>
                 <p class="text-sm text-gray-500 mt-1">View and manage your product reviews</p>
+            </a>
+            <a href="{{ route('wishlist.index') }}" class="p-5 border border-gray-200 rounded-lg hover:border-amber-300 hover:shadow-sm transition">
+                <p class="font-semibold text-gray-900">My Wishlist</p>
+                <p class="text-sm text-gray-500 mt-1">{{ \App\Services\WishlistService::count() }} saved items</p>
             </a>
             <a href="{{ route('user.profile') }}" class="p-5 border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition">
                 <p class="font-semibold text-gray-900">Profile Settings</p>

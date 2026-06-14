@@ -5,6 +5,23 @@
 @section('content')
     @include('partials.front-slider', ['sliderProducts' => $sliderProducts])
 
+    @if (session('success'))
+        <div x-data="{ show: true }" x-show="show" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+            <div class="p-4 bg-green-50 border border-green-200 rounded-lg flex items-center justify-between">
+                <p class="text-green-700 text-sm">{{ session('success') }}</p>
+                <button @click="show = false" class="text-green-500 hover:text-green-700"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    @endif
+    @if (session('info'))
+        <div x-data="{ show: true }" x-show="show" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+            <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+                <p class="text-blue-700 text-sm">{{ session('info') }}</p>
+                <button @click="show = false" class="text-blue-500 hover:text-blue-700"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    @endif
+
     <section class="py-16">
         <div class="text-center mb-10">
             <h2 class="text-2xl font-bold text-gray-900">Shop by Category</h2>
@@ -40,7 +57,7 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse ($featuredProducts as $product)
-                <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition">
+                <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition group">
                     <a href="{{ route('product.detail', $product->slug) }}" class="block aspect-[4/3] bg-gray-100 overflow-hidden">
                         @if ($product->image)
                             <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
@@ -67,11 +84,20 @@
                         @endif
                         <div class="mt-2 flex items-center justify-between">
                             <p class="text-sm font-medium text-gray-900">${{ number_format($product->price, 2) }}</p>
-                            <form action="{{ route('cart.store', $product) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition">Add to Cart</button>
-                            </form>
+                            <div class="flex items-center space-x-2">
+                                <form action="{{ route('wishlist.toggle', $product) }}" method="POST">
+                                    @csrf
+                                    @php $isWishlisted = \App\Services\WishlistService::isWishlisted($product->id); @endphp
+                                    <button type="submit" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:border-red-300 hover:bg-red-50 transition" title="{{ $isWishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}">
+                                        <i class="{{ $isWishlisted ? 'fas' : 'far' }} fa-heart {{ $isWishlisted ? 'text-red-500' : 'text-gray-400' }} text-sm"></i>
+                                    </button>
+                                </form>
+                                <form action="{{ route('cart.store', $product) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition">Add to Cart</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -89,7 +115,7 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($latestProducts as $product)
-                    <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition">
+                    <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition group">
                         <a href="{{ route('product.detail', $product->slug) }}" class="block aspect-[4/3] bg-gray-100 overflow-hidden">
                             @if ($product->image)
                                 <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
@@ -116,11 +142,20 @@
                             @endif
                             <div class="mt-2 flex items-center justify-between">
                                 <p class="text-sm font-medium text-gray-900">${{ number_format($product->price, 2) }}</p>
-                                <form action="{{ route('cart.store', $product) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition">Add to Cart</button>
-                                </form>
+                                <div class="flex items-center space-x-2">
+                                    <form action="{{ route('wishlist.toggle', $product) }}" method="POST">
+                                        @csrf
+                                        @php $isWishlisted = \App\Services\WishlistService::isWishlisted($product->id); @endphp
+                                        <button type="submit" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:border-red-300 hover:bg-red-50 transition" title="{{ $isWishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}">
+                                            <i class="{{ $isWishlisted ? 'fas' : 'far' }} fa-heart {{ $isWishlisted ? 'text-red-500' : 'text-gray-400' }} text-sm"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('cart.store', $product) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition">Add to Cart</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

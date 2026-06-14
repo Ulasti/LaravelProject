@@ -12,6 +12,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProfileController;
@@ -23,10 +24,15 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
-Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('product.detail');
+Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('product.detail')->middleware('track.recent');
 Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 
 Route::post('/product/{product}/review', [ReviewController::class, 'store'])->name('review.store')->middleware('auth');
+
+Route::prefix('wishlist')->name('wishlist.')->controller(WishlistController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/toggle/{product}', 'toggle')->name('toggle');
+});
 
 Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
     Route::get('/', 'index')->name('index');
