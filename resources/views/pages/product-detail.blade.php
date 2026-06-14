@@ -82,15 +82,24 @@
                     @endif
                 </div>
 
-                <form action="{{ route('cart.store', $product) }}" method="POST" class="mt-8 flex items-center space-x-4">
-                    @csrf
-                    <div class="flex items-center border border-gray-300 rounded-lg" x-data="{ qty: 1 }">
-                        <button type="button" @click="qty = Math.max(1, qty - 1)" class="px-3 py-2 text-gray-500 hover:text-gray-900 transition">-</button>
-                        <input type="number" name="quantity" x-model="qty" min="1" class="w-12 text-center border-x border-gray-300 py-2 text-sm focus:outline-none">
-                        <button type="button" @click="qty++" class="px-3 py-2 text-gray-500 hover:text-gray-900 transition">+</button>
-                    </div>
-                    <button type="submit" class="flex-1 px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition text-sm">Add to Cart</button>
-                </form>
+                <div class="mt-8 flex items-center space-x-3">
+                    <form action="{{ route('cart.store', $product) }}" method="POST" class="flex items-center space-x-4 flex-1">
+                        @csrf
+                        <div class="flex items-center border border-gray-300 rounded-lg" x-data="{ qty: 1 }">
+                            <button type="button" @click="qty = Math.max(1, qty - 1)" class="px-3 py-2 text-gray-500 hover:text-gray-900 transition">-</button>
+                            <input type="number" name="quantity" x-model="qty" min="1" class="w-12 text-center border-x border-gray-300 py-2 text-sm focus:outline-none">
+                            <button type="button" @click="qty++" class="px-3 py-2 text-gray-500 hover:text-gray-900 transition">+</button>
+                        </div>
+                        <button type="submit" class="flex-1 px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition text-sm">Add to Cart</button>
+                    </form>
+                    <form action="{{ route('wishlist.toggle', $product) }}" method="POST">
+                        @csrf
+                        @php $isWishlisted = \App\Services\WishlistService::isWishlisted($product->id); @endphp
+                        <button type="submit" class="w-11 h-11 rounded-lg border border-gray-300 flex items-center justify-center hover:border-red-300 hover:bg-red-50 transition" title="{{ $isWishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}">
+                            <i class="{{ $isWishlisted ? 'fas' : 'far' }} fa-heart {{ $isWishlisted ? 'text-red-500' : 'text-gray-400' }} text-lg"></i>
+                        </button>
+                    </form>
+                </div>
 
                 @if ($product->keywords)
                     <div class="mt-6 flex items-center space-x-2">
@@ -108,6 +117,92 @@
                 <h2 class="text-xl font-bold text-gray-900 mb-4">Description</h2>
                 <div class="prose prose-gray max-w-none">
                     {!! $product->description !!}
+                </div>
+            </div>
+        @endif
+
+        @php $relatedProducts = $product->related(); @endphp
+        @if ($relatedProducts->count())
+            <div class="mt-16">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">You May Also Like</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @foreach ($relatedProducts as $related)
+                        <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition group">
+                            <a href="{{ route('product.detail', $related->slug) }}" class="block aspect-[4/3] bg-gray-100 overflow-hidden">
+                                @if ($related->image)
+                                    <img src="{{ $related->imageUrl() }}" alt="{{ $related->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                @endif
+                            </a>
+                            <div class="p-4">
+                                <p class="text-xs font-medium text-indigo-600 uppercase tracking-wider">{{ $related->category?->title ?? 'Uncategorized' }}</p>
+                                <a href="{{ route('product.detail', $related->slug) }}">
+                                    <h3 class="mt-1 font-semibold text-gray-900 hover:text-indigo-600 transition-colors">{{ $related->title }}</h3>
+                                </a>
+                                @if ($related->reviews_count > 0)
+                                    <div class="mt-1 flex items-center space-x-1">
+                                        <div class="flex items-center space-x-0.5">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= round($related->reviews_avg_rating ?? 0))
+                                                    <i class="fas fa-star text-amber-400 text-xs"></i>
+                                                @else
+                                                    <i class="far fa-star text-gray-300 text-xs"></i>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                        <span class="text-xs text-gray-400">({{ $related->reviews_count }})</span>
+                                    </div>
+                                @endif
+                                <div class="mt-2 flex items-center justify-between">
+                                    <p class="text-sm font-medium text-gray-900">${{ number_format($related->price, 2) }}</p>
+                                    <div class="flex items-center space-x-2">
+                                        <form action="{{ route('wishlist.toggle', $related) }}" method="POST">
+                                            @csrf
+                                            @php $isWishlisted = \App\Services\WishlistService::isWishlisted($related->id); @endphp
+                                            <button type="submit" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:border-red-300 hover:bg-red-50 transition" title="{{ $isWishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}">
+                                                <i class="{{ $isWishlisted ? 'fas' : 'far' }} fa-heart {{ $isWishlisted ? 'text-red-500' : 'text-gray-400' }} text-sm"></i>
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('cart.store', $related) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="quantity" value="1">
+                                            <button type="submit" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition">Add to Cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        @php $recentProducts = \App\Services\RecentViewsService::products(5); @endphp
+        @if ($recentProducts->count())
+            <div class="mt-16">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">Recently Viewed</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    @foreach ($recentProducts as $product)
+                        <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition group">
+                            <a href="{{ route('product.detail', $product->slug) }}" class="block aspect-[4/3] bg-gray-100 overflow-hidden">
+                                @if ($product->image)
+                                    <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                @endif
+                            </a>
+                            <div class="p-3">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-semibold text-gray-900 truncate">{{ $product->title }}</p>
+                                    <form action="{{ route('wishlist.toggle', $product) }}" method="POST">
+                                        @csrf
+                                        @php $isWishlisted = \App\Services\WishlistService::isWishlisted($product->id); @endphp
+                                        <button type="submit" class="text-xs {{ $isWishlisted ? 'text-red-500' : 'text-gray-400' }} hover:text-red-500 transition" title="{{ $isWishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}">
+                                            <i class="{{ $isWishlisted ? 'fas' : 'far' }} fa-heart"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                                <p class="mt-1 text-sm font-medium text-gray-900">${{ number_format($product->price, 2) }}</p>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         @endif

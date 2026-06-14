@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => \App\Http\Middleware\CheckAdmin::class,
+            'track.recent' => \App\Http\Middleware\TrackRecentViews::class,
         ]);
     })
     ->withSchedule(function ($schedule): void {

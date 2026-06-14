@@ -38,6 +38,18 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function related(int $limit = 4)
+    {
+        return $this->where('category_id', $this->category_id)
+            ->where('id', '!=', $this->id)
+            ->where('status', 1)
+            ->inRandomOrder()
+            ->withAvg(['reviews as reviews_avg_rating' => fn($q) => $q->where('status', 'approved')], 'rating')
+            ->withCount(['reviews as reviews_count' => fn($q) => $q->where('status', 'approved')])
+            ->limit($limit)
+            ->get();
+    }
+
     public function imageUrl(): string
     {
         if (Str::startsWith($this->image, 'http')) {
