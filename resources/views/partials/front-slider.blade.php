@@ -4,7 +4,7 @@
             <div class="relative bg-gradient-to-br from-indigo-600 to-purple-700 overflow-hidden rounded-b-lg">
                 @if ($product->image)
                     <div class="absolute inset-0">
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="" class="w-full h-full object-cover opacity-20">
+                        <img src="{{ $product->imageUrl() }}" alt="" class="w-full h-full object-cover opacity-20">
                     </div>
                 @endif
                 <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
@@ -23,7 +23,7 @@
                         </div>
                         @if ($product->image)
                             <div class="hidden lg:block">
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="" class="w-80 h-80 object-cover rounded-lg shadow-lg">
+                                <img src="{{ $product->imageUrl() }}" alt="" class="w-80 h-80 object-cover rounded-lg shadow-lg">
                             </div>
                         @endif
                     </div>

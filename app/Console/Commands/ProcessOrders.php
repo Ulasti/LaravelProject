@@ -17,6 +17,20 @@ class ProcessOrders extends Command
     {
         $this->processPending();
         $this->processProcessing();
+        $this->processShipped();
+    }
+
+    private function processShipped(): void
+    {
+        $orders = Order::where('status', 'shipped')
+            ->where('updated_at', '<=', now()->subMinutes(2))
+            ->get();
+
+        foreach ($orders as $order) {
+            $order->update(['status' => 'completed']);
+
+            $this->info("Order #{$order->id}: completed");
+        }
     }
 
     private function processPending(): void

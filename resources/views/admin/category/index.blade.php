@@ -43,7 +43,7 @@
                         <td class="py-3 pr-4 text-gray-900 font-medium">{{ $parent->id }}</td>
                         <td class="py-3 pr-4">
                             @if ($parent->image)
-                                <img src="{{ asset('storage/' . $parent->image) }}" alt="{{ $parent->title }}" class="w-10 h-10 rounded-lg object-cover">
+                                <img src="{{ $parent->imageUrl() }}" alt="{{ $parent->title }}" class="w-10 h-10 rounded-lg object-cover">
                             @else
                                 <span class="text-gray-400">—</span>
                             @endif
@@ -71,7 +71,7 @@
                             <td class="py-3 pr-4 text-gray-900 pl-8">{{ $child->id }}</td>
                             <td class="py-3 pr-4">
                                 @if ($child->image)
-                                    <img src="{{ asset('storage/' . $child->image) }}" alt="{{ $child->title }}" class="w-8 h-8 rounded-lg object-cover">
+                                    <img src="{{ $child->imageUrl() }}" alt="{{ $child->title }}" class="w-8 h-8 rounded-lg object-cover">
                                 @else
                                     <span class="text-gray-400">—</span>
                                 @endif
