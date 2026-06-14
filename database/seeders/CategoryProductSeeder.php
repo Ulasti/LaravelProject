@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryProductSeeder extends Seeder
 {
@@ -56,6 +57,26 @@ class CategoryProductSeeder extends Seeder
     private function picsum(string $seed): string
     {
         return 'https://picsum.photos/seed/' . $seed . '/600/600';
+    }
+
+    private function storeImage(string $url, string $slug, string $suffix = ''): string
+    {
+        $filename = $slug . ($suffix ? "-{$suffix}" : '') . '.jpg';
+        $path = 'products/' . $filename;
+
+        if (Storage::disk('public')->exists($path)) {
+            return $path;
+        }
+
+        try {
+            $response = Http::timeout(10)->get($url);
+            if ($response->successful()) {
+                Storage::disk('public')->put($path, $response->body());
+                return $path;
+            }
+        } catch (\Exception $e) {}
+
+        return $url;
     }
 
     public function run(): void
@@ -211,7 +232,8 @@ class CategoryProductSeeder extends Seeder
                 'stainless-steel-dog-bowls' => 'Set of two stainless steel dog bowls with non-skid silicone base. 2-cup and 4-cup capacities.',
             };
 
-            $image = $this->pexelsImage($data['title'], 0) ?? $this->picsum($data['slug']);
+            $imageUrl = $this->pexelsImage($data['title'], 0) ?? $this->picsum($data['slug']);
+            $image = $this->storeImage($imageUrl, $data['slug']);
 
             $product = Product::create([
                 'category_id'  => $data['category_id'],
@@ -227,8 +249,9 @@ class CategoryProductSeeder extends Seeder
             ]);
 
             foreach (['front', 'side', 'detail', 'box'] as $i => $view) {
-                $galleryImage = $this->pexelsImage($data['title'], $i + 1)
+                $galleryUrl = $this->pexelsImage($data['title'], $i + 1)
                     ?? $this->picsum($data['slug'] . '-' . $view);
+                $galleryImage = $this->storeImage($galleryUrl, $data['slug'], $view);
 
                 ProductImage::create([
                     'product_id' => $product->id,
@@ -242,7 +265,8 @@ class CategoryProductSeeder extends Seeder
 
     private function makeCategory(string $title, string $keywords, string $description, ?int $parentId = null): Category
     {
-        $image = $this->pexelsImage($title, 0) ?? $this->picsum(str($title)->slug());
+        $imageUrl = $this->pexelsImage($title, 0) ?? $this->picsum(str($title)->slug());
+        $image = $this->storeImage($imageUrl, str($title)->slug());
 
         return Category::create([
             'parent_id'   => $parentId,
