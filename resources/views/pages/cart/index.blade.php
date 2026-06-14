@@ -34,7 +34,7 @@
                                     <div class="flex items-center space-x-4">
                                         @if ($item['image'])
                                             <div class="w-16 h-16 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
-                                                <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['title'] }}" class="w-full h-full object-cover">
+                                                <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : asset('storage/' . $item['image']) }}" alt="{{ $item['title'] }}" class="w-full h-full object-cover">
                                             </div>
                                         @endif
                                         <div>

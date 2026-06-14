@@ -24,7 +24,7 @@
         @if ($product->image)
             <div>
                 <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Image</h3>
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-48 h-48 object-cover rounded-lg border border-gray-200">
+                <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-48 h-48 object-cover rounded-lg border border-gray-200">
             </div>
         @endif
 
@@ -33,7 +33,7 @@
                 <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Gallery</h3>
                 <div class="flex flex-wrap gap-3">
                     @foreach ($product->images as $img)
-                        <img src="{{ asset('storage/' . $img->image) }}" class="w-20 h-20 object-cover rounded-lg border border-gray-200">
+                        <img src="{{ $img->imageUrl() }}" class="w-20 h-20 object-cover rounded-lg border border-gray-200">
                     @endforeach
                 </div>
             </div>

@@ -103,7 +103,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
                     <input type="file" name="image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('image') border-red-500 @enderror">
                     @if ($product->image)
-                        <p class="mt-2 text-sm text-gray-500">Current: <a href="{{ asset('storage/' . $product->image) }}" target="_blank" class="text-indigo-600 hover:underline">{{ $product->image }}</a></p>
+                        <p class="mt-2 text-sm text-gray-500">Current: <a href="{{ $product->imageUrl() }}" target="_blank" class="text-indigo-600 hover:underline">{{ $product->image }}</a></p>
                     @endif
                     @error('image')
                         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
@@ -125,7 +125,7 @@
                         <div class="flex flex-wrap gap-3">
                             @foreach ($product->images as $img)
                                 <div class="relative group">
-                                    <img src="{{ asset('storage/' . $img->image) }}" class="w-20 h-20 object-cover rounded-lg border border-gray-200">
+                                    <img src="{{ $img->imageUrl() }}" class="w-20 h-20 object-cover rounded-lg border border-gray-200">
                                     <form action="{{ route('admin.product.image.destroy', $img->id) }}" method="POST" class="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition" onsubmit="return confirm('Delete this image?')">
                                         @csrf
                                         @method('DELETE')

@@ -46,7 +46,7 @@
                         <td class="py-3 pr-4 text-gray-900 font-medium">{{ $product->id }}</td>
                         <td class="py-3 pr-4">
                             @if ($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-10 h-10 rounded-lg object-cover">
+                                <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-10 h-10 rounded-lg object-cover">
                             @else
                                 <span class="text-gray-400">—</span>
                             @endif

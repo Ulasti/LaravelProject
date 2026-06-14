@@ -24,7 +24,7 @@
                 <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition">
                     <a href="{{ route('product.detail', $product->slug) }}" class="block aspect-[4/3] bg-gray-100 overflow-hidden">
                         @if ($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                         @endif
                     </a>
                     <div class="p-4">

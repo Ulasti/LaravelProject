@@ -61,7 +61,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
                     <input type="file" name="image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('image') border-red-500 @enderror">
                     @if ($category->image)
-                        <p class="mt-2 text-sm text-gray-500">Current: <a href="{{ asset('storage/' . $category->image) }}" target="_blank" class="text-indigo-600 hover:underline">{{ $category->image }}</a></p>
+                        <p class="mt-2 text-sm text-gray-500">Current: <a href="{{ $category->imageUrl() }}" target="_blank" class="text-indigo-600 hover:underline">{{ $category->image }}</a></p>
                     @endif
                     @error('image')
                         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>

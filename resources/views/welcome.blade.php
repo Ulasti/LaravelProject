@@ -15,7 +15,7 @@
                 <a href="{{ route('shop', ['category' => $cat->id]) }}" class="group p-8 bg-white border border-gray-100 rounded-lg text-center hover:shadow-lg transition cursor-pointer">
                     @if ($cat->image)
                         <div class="w-16 h-16 mx-auto mb-4 overflow-hidden rounded-xl">
-                            <img src="{{ asset('storage/' . $cat->image) }}" alt="{{ $cat->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $cat->imageUrl() }}" alt="{{ $cat->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         </div>
                     @else
                         <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -25,7 +25,7 @@
                         </div>
                     @endif
                     <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{{ $cat->title }}</h3>
-                    <p class="mt-1 text-sm text-gray-500">{{ $cat->products_count ?? $cat->products()->count() }} products</p>
+                    <p class="mt-1 text-sm text-gray-500">{{ $cat->total_products }} products</p>
                 </a>
             @empty
                 <p class="col-span-full text-center text-gray-500 py-12">No categories yet.</p>
@@ -43,7 +43,7 @@
                 <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition">
                     <a href="{{ route('product.detail', $product->slug) }}" class="block aspect-[4/3] bg-gray-100 overflow-hidden">
                         @if ($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                            <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                         @endif
                     </a>
                     <div class="p-4">
@@ -92,7 +92,7 @@
                     <div class="bg-white border border-gray-100 overflow-hidden rounded-lg hover:shadow-lg transition">
                         <a href="{{ route('product.detail', $product->slug) }}" class="block aspect-[4/3] bg-gray-100 overflow-hidden">
                             @if ($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                             @endif
                         </a>
                         <div class="p-4">

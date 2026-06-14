@@ -12,7 +12,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::whereNull('parent_id')->where('status', 1)->with('children')->get();
+        $categories = Category::whereNull('parent_id')->where('status', 1)
+            ->with(['children' => fn($q) => $q->withCount('products')])
+            ->get()
+            ->each(fn($cat) => $cat->total_products = $cat->products()->count() + $cat->children->sum('products_count'));
         $featuredProducts = Product::where('status', 1)->withAvg(['reviews as reviews_avg_rating' => fn($q) => $q->where('status', 'approved')], 'rating')->withCount(['reviews as reviews_count' => fn($q) => $q->where('status', 'approved')])->inRandomOrder()->limit(4)->get();
         $latestProducts = Product::where('status', 1)->withAvg(['reviews as reviews_avg_rating' => fn($q) => $q->where('status', 'approved')], 'rating')->withCount(['reviews as reviews_count' => fn($q) => $q->where('status', 'approved')])->latest()->limit(8)->get();
         $sliderProducts = Product::where('status', 1)->inRandomOrder()->limit(5)->get();

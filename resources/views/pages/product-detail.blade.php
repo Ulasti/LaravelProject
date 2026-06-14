@@ -19,26 +19,26 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
                 @if ($product->images->count())
-                    <div x-data="{ activeImage: '{{ $product->image ? asset('storage/' . $product->image) : '' }}' }">
+                    <div x-data="{ activeImage: '{{ $product->image ? $product->imageUrl() : '' }}' }">
                         <div class="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden mb-4 cursor-pointer" @click="window.open(activeImage, '_blank')">
                             <img :src="activeImage" alt="{{ $product->title }}" class="w-full h-full object-cover">
                         </div>
                         <div class="flex items-center space-x-3">
                             @if ($product->image)
-                                <button @click="activeImage = '{{ asset('storage/' . $product->image) }}'" class="w-16 h-16 rounded-lg overflow-hidden border-2" :class="activeImage === '{{ asset('storage/' . $product->image) }}' ? 'border-indigo-600' : 'border-transparent'">
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
+                                <button @click="activeImage = '{{ $product->imageUrl() }}'" class="w-16 h-16 rounded-lg overflow-hidden border-2" :class="activeImage === '{{ $product->imageUrl() }}' ? 'border-indigo-600' : 'border-transparent'">
+                                    <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
                                 </button>
                             @endif
                             @foreach ($product->images as $img)
-                                <button @click="activeImage = '{{ asset('storage/' . $img->image) }}'" class="w-16 h-16 rounded-lg overflow-hidden border-2" :class="activeImage === '{{ asset('storage/' . $img->image) }}' ? 'border-indigo-600' : 'border-transparent'">
-                                    <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
+                                <button @click="activeImage = '{{ $img->imageUrl() }}'" class="w-16 h-16 rounded-lg overflow-hidden border-2" :class="activeImage === '{{ $img->imageUrl() }}' ? 'border-indigo-600' : 'border-transparent'">
+                                    <img src="{{ $img->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
                                 </button>
                             @endforeach
                         </div>
                     </div>
                 @elseif ($product->image)
                     <div class="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
+                        <img src="{{ $product->imageUrl() }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
                     </div>
                 @endif
             </div>

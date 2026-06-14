@@ -24,7 +24,7 @@
         @if ($category->image)
             <div>
                 <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Image</h3>
-                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->title }}" class="w-48 h-48 object-cover border border-gray-200">
+                <img src="{{ $category->imageUrl() }}" alt="{{ $category->title }}" class="w-48 h-48 object-cover border border-gray-200">
             </div>
         @endif
 
